@@ -28,6 +28,7 @@ import deleteItm from "../assets/Icons/delete.png";
 import addItm from "../assets/Icons/add.png";
 import bgImg from "../assets/Images/bg.jpg";
 import closeBtn from "../assets/Icons/close.png";
+import AddItemCom from './AddItemCom';
 // import AddNewItem from "./AddNewItem";
 
 const ViewItemsScreen = () => {
@@ -41,7 +42,7 @@ const ViewItemsScreen = () => {
     const [selectedCategory, setSelectedCategory] = useState();
     const [displayCatgory, setDisplayCatgory] = useState([]);
     const [displayCatgoryStatus, setDisplayCatgoryStatus] = useState(false);
-    // const [loadingStatus, setloadingStatusStatus] = useState(false);
+    const [addItemStatus, setaddItemStatus] = useState(false);
     const [updateItem, setUpdateItem] = useState({
         id: "",
         itemName: "",
@@ -416,6 +417,13 @@ const ViewItemsScreen = () => {
             itemCategory: item.itemCategory
         })
     }
+    function openAddForm() {
+        setaddItemStatus(true);
+    }
+    function closeAddForm() {
+        setaddItemStatus(false);
+    }
+
     function closeForm() {
         setUpdateItemStatus(false);
     }
@@ -513,9 +521,9 @@ const ViewItemsScreen = () => {
 
                         <ImageBackground source={bgImg} style={{ width: "91%", height: "100%" }}>
                             <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }} />
-                            <View style={{ position: "absolute", zIndex: 10, top: 20, right: 50, height: 50, width: 50, zIndex: 99 }}>
+                            <TouchableOpacity style={{ position: "absolute", zIndex: 10, top: 20, right: 50, height: 50, width: 50, zIndex: 99 }}>
                                 <Image source={addItm} style={{ width: "100%", height: "100%" }} />
-                            </View>
+                            </TouchableOpacity>
                             <Text style={{ position: "absolute", zIndex: 10, bottom: 20, left: 20, fontSize: 30, fontWeight: "bold", color: "whitesmoke" }}>My Shopping List</Text>
 
                         </ImageBackground>
@@ -636,7 +644,7 @@ const ViewItemsScreen = () => {
                             <Image source={closeBtn} style={{ width: 35, height: 35 }} />
                         </TouchableOpacity>
                         <View style={{ width: "75%", height: "75%", }}>
-                            <Text style={{ color: handleHeadingColor(updateItem.itemCategory), fontSize: 22, fontWeight: "bold", marginBottom: 20 }}>Update Item</Text>
+                            <Text style={{ color: handleHeadingColor(updateItem.itemCategory), fontSize: 30, fontWeight: "bold", marginBottom: 20 }}>Update Item</Text>
                             <TextInput style={styles.formInput}
                                 onChangeText={text => setItemName(text)}
                                 value={itemName} placeholder={`Item Name: ${updateItem.itemName}`} />
@@ -673,11 +681,16 @@ const ViewItemsScreen = () => {
                 </View>
                 : null}
 
-            <View style={styles.popUpCont}>
-                <View style={styles.popUpBox}>
-                    
+            {addItemStatus ?
+                <View style={styles.popUpCont}>
+                    <View style={styles.popUpBox}>
+                        <TouchableOpacity style={{ width: 50, height: 50, position: "absolute", top: 20, right: 20, justifyContent: "center", alignItems: "center" }} >
+                            <Image source={closeBtn} style={{ width: 35, height: 35 }} />
+                        </TouchableOpacity>
+                        <AddItemCom />
+                    </View>
                 </View>
-            </View>
+                : null}
         </View>
     )
 }
