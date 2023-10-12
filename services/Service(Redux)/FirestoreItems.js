@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-    collection, getDocs, doc, deleteDoc, updateDoc
-} from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../Config/Firebase";
 
 const initialState = {
@@ -10,7 +8,7 @@ const initialState = {
     items: []
 }
 
-const FirestoreGetItemsSlice = createSlice({
+const FirestoreItems = createSlice({
     name: "items",
     initialState,
     reducers: {
@@ -42,7 +40,7 @@ const FirestoreGetItemsSlice = createSlice({
     }
 })
 
-export const { fetchItemsStart, fetchItemsSuccess, fetchItemSuccess, fetchItemsFailure, deleteItem, updateMyItem } = FirestoreGetItemsSlice.actions;
+export const { fetchItemsStart, fetchItemsSuccess, fetchItemSuccess, fetchItemsFailure, deleteItem, updateMyItem } = FirestoreItems.actions;
 
 export const fetchItems = () => async (dispatch) => {
     dispatch(fetchItemsStart())
@@ -89,4 +87,4 @@ export const updateAnItem = (id) => async (dispatch) => {
     }
 }
 
-export default FirestoreGetItemsSlice.reducer;
+export default FirestoreItems.reducer;

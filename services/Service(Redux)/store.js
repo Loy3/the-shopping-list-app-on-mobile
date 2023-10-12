@@ -1,10 +1,10 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import FirestoreStoreItemSlice from './FirestoreStoreItem';
-// import FirestoreGetItemsSlice from './FirestoreGetItems';
+import { configureStore } from '@reduxjs/toolkit';
+import FirestoreStoreItem from './FirestoreStoreItem';
+import FirestoreItems from './FirestoreItems';
 
-// export const store = configureStore({
-//     reducer: {
-//         db: FirestoreStoreItemSlice,
-//         items: FirestoreGetItemsSlice
-//     }
-// }) 
+export const store = configureStore({
+    reducer: {
+        db: FirestoreStoreItem,
+        items: FirestoreItems
+    }
+}) 

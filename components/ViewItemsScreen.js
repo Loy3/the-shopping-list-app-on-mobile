@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Button, ImageBackground, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 // import { fetchItems, deleteAnItem } from "../services/Service(Redux)/FirestoreGetItems";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { updateAnItem } from "../services/Service(Redux)/FirestoreGetItems";
 import { fetchItems, deleteAnItem, updateAnItem } from "../services/Service(Redux)/FirestoreItems";
-import { useDispatch, useSelector } from "react-redux";
+// import {  useSelector } from "react-redux";
 
 //import images
 import allI from "../assets/Icons/all.png";
@@ -30,6 +30,21 @@ import bgImg from "../assets/Images/bg.jpg";
 
 const ViewItemsScreen = () => {
 
+    const dispatch = useDispatch();
+    const { items } = useSelector((state) => state.items)
+    console.log(items);
+
+    const [updateItem, setUpdateItem] = useState({
+        id: "",
+        itemName: "",
+        itemQuantity: "",
+        itemCategory: ""
+    });
+
+    useEffect(() => {
+        dispatch(fetchItems())
+    }, [dispatch])
+    
     const categories = [
         {
             name: "All",
@@ -228,17 +243,40 @@ const ViewItemsScreen = () => {
                                 </ImageBackground>
 
                                 <View style={{ margin: 10 }}>
-                                    <Text style={[styles.sideNavHeadTxt, { color: "black" }]}>Items</Text>
+                                    <Text style={[styles.sideNavHeadTxt, { color: "black", fontSize: 33 }]}>Items</Text>
                                     <Text>List of all items.</Text>
                                 </View>
 
                                 <View style={{ width: "80%", marginTop: 50 }}>
-                                    <View style={{ width: "97%", height: 180 }}>
+                                    <View style={{ width: "95%", height: 180, marginLeft: "1%" }}>
                                         <LinearGradient
                                             // Button Linear Gradient
                                             colors={handleColor("Beverages")}
                                             style={[styles.sideNavBtnBg, { borderRadius: 15 }]}>
-                                            <Image source={bev} style={{ width: 50, height: 50, position: "absolute", top: -20, left: 20 }} />
+                                            <Image source={bev} style={{ width: 55, height: 55, position: "absolute", top: -30, left: 20 }} />
+
+                                            <View style={{ width: "85%", height: "85%", marginTop: 50 }}>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text>Item: </Text>
+                                                    <Text>Toothbrush</Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text>Category: </Text>
+                                                    <Text>Personal Care</Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text>Quantity: </Text>
+                                                    <Text>4</Text>
+                                                </View>
+                                            </View>
+
+                                            <View style={{ flexDirection: "row", position: "absolute", top:20, right:10 }}>
+                                            <Image source={editItem} style={{ width: 35, height: 35 }} />
+                                            <Image source={deleteItm} style={{ width: 35, height: 35, marginLeft:10 }} />
+                                            </View>
+
                                         </LinearGradient>
 
                                     </View>
@@ -265,7 +303,7 @@ const styles = StyleSheet.create({
     },
     sideNavCont: {
         // position: "absolute",/
-        width: 85,
+        width: 75,
         height: "auto",
         zIndex: 10,
         top: 0,
