@@ -6,11 +6,13 @@ import { addNewItem } from "../services/Service(Redux)/FirestoreStoreItem";
 import closeBtn from "../assets/Icons/close.png";
 
 
-const AddItemCom = () => {
+const AddItemCom = ({ setaddItemStatus }) => {
   const dispatch = useDispatch();
   const [itemName, setItemName] = useState();
   const [itemQuantity, setItemQuantity] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
+  const [warningMsg, setWarningMsg] = useState("");
+  const [warningMsgStatus, setWarningMsgStatus] = useState(false);
 
 
   function handleChange(type) {
@@ -75,10 +77,37 @@ const AddItemCom = () => {
 
   }
 
+  async function onSaveItem() {
+    if (itemName !== undefined && itemQuantity !== undefined && selectedCategory !== undefined) {
+      console.log("all is well");
+      setWarningMsg("");
+      setWarningMsgStatus(false);
+
+      const item = {
+        itemName: itemName,
+        itemQuantity: itemQuantity,
+        itemCategory: selectedCategory
+    }
+
+    dispatch(addNewItem(item))
+    setaddItemStatus(false);
+    } else {
+      setWarningMsg("Fields shouldn't be left empty.");
+      setWarningMsgStatus(true);
+    }
+    
+
+
+  }
+
   return (
     <View style={{ width: "75%", height: "75%", }}>
       <Text style={{ color: handleChange(selectedCategory), fontSize: 30, fontWeight: "bold", marginBottom: 2 }}>Add Item</Text>
-      <Text style={{ color: "black", fontSize: 18,  marginBottom: 20 }}>Add a new item</Text>
+      <Text style={{ color: "black", fontSize: 18, marginBottom: 20 }}>Add a new item</Text>
+
+      {warningMsgStatus ?
+        <Text style={{ fontSize: 18, color: "red", marginBottom: -10 }}>{warningMsg}</Text>
+        : null}
       <TextInput style={[styles.formInput, { borderColor: handleChange(selectedCategory) }]}
         onChangeText={text => setItemName(text)}
         value={itemName} placeholder="Item Name:" />
@@ -107,8 +136,8 @@ const AddItemCom = () => {
 
       </View>
 
-      <TouchableOpacity style={{ width: "100%", height: 50, alignItems: "center", justifyContent: "center", backgroundColor: handleChange(selectedCategory), marginTop: 30 }} >
-        <Text style={{ fontSize: 16, fontWeight: "bold", color: "whitesmoke" }}>Update</Text>
+      <TouchableOpacity style={{ width: "100%", height: 50, alignItems: "center", justifyContent: "center", backgroundColor: handleChange(selectedCategory), marginTop: 30 }} onPress={onSaveItem}>
+        <Text style={{ fontSize: 16, fontWeight: "bold", color: "whitesmoke" }}>Save</Text>
       </TouchableOpacity>
     </View>
   )

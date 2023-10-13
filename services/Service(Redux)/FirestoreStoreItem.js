@@ -13,7 +13,7 @@ export const FirestoreStoreItem = createSlice({
         addNewItem: (state, action) => {
             try {
                 const docRef = addDoc(collection(db, "items"), action.payload);
-                console.log(docRef);
+                // console.log(docRef);
             } catch (error) {
                 alert(error)
             }

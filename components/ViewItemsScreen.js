@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchItems, deleteAnItem, updateAnItem } from "../services/Service(Redux)/FirestoreItems";
 // import {  useSelector } from "react-redux";
 import { Picker } from '@react-native-picker/picker';
-
+import { Provider } from 'react-redux';
+import { store } from "../services/Service(Redux)/store";
 //import images
 import allI from "../assets/Icons/all.png";
 import bev from "../assets/Icons/Beverages.png";
@@ -53,9 +54,9 @@ const ViewItemsScreen = () => {
     const [updateItemStatus, setUpdateItemStatus] = useState(false)
     const [title, setTitle] = useState("");
 
-    // useEffect(() => {
-    //     dispatch(fetchItems())
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(fetchItems())
+    }, [dispatch])
 
     const categories = [
         {
@@ -419,6 +420,7 @@ const ViewItemsScreen = () => {
     }
     function openAddForm() {
         setaddItemStatus(true);
+        console.log("show");
     }
     function closeAddForm() {
         setaddItemStatus(false);
@@ -469,6 +471,7 @@ const ViewItemsScreen = () => {
         await dispatch(updateAnItem(itemToUpdate)).then(() => {
             setUpdateItemStatus(false);
             dispatch(fetchItems());
+            setDisplayCatgoryStatus(false)
         })
 
     }
@@ -495,7 +498,8 @@ const ViewItemsScreen = () => {
                                 <View style={styles.sideNavWrapper}>
                                     {/* <Text>Hello</Text> */}
                                     <ImageBackground source={bgImg} style={styles.sideNavHead}>
-                                        <Text style={styles.sideNavHeadTxt}>Ca</Text>
+                                        <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }} />
+                                        <Text style={[styles.sideNavHeadTxt, { position: "absolute", zIndex: 10 }]}>Ca</Text>
                                     </ImageBackground>
 
                                     <View style={styles.sideNavBtnCont}>
@@ -517,25 +521,25 @@ const ViewItemsScreen = () => {
                 </View>
 
                 <View style={{ width: "100%" }}>
-                    <View style={{ width: "100%", height: 150, marginTop: 35 }}>
+                    <View style={{ width: "100%", height: 80, marginTop: 35 }}>
 
                         <ImageBackground source={bgImg} style={{ width: "91%", height: "100%" }}>
                             <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }} />
-                            <TouchableOpacity style={{ position: "absolute", zIndex: 10, top: 20, right: 50, height: 50, width: 50, zIndex: 99 }}>
+                            <TouchableOpacity style={{ position: "absolute", zIndex: 10, top: 20, right: 50, height: 50, width: 50, zIndex: 99 }} onPress={openAddForm}>
                                 <Image source={addItm} style={{ width: "100%", height: "100%" }} />
                             </TouchableOpacity>
-                            <Text style={{ position: "absolute", zIndex: 10, bottom: 20, left: 20, fontSize: 30, fontWeight: "bold", color: "whitesmoke" }}>My Shopping List</Text>
+                            <Text style={{ position: "absolute", zIndex: 10, bottom: 10, left: 20, fontSize: 28, fontWeight: "bold", color: "whitesmoke" }}>My Shopping List</Text>
 
                         </ImageBackground>
 
                     </View>
                     <ScrollView scrollEnabled={true} >
                         <>
-                            {/* {!displayCatgoryStatus ?
+                           {!displayCatgoryStatus ?
                                 <View>
 
                                     <View style={{ margin: 10 }}>
-                                        <Text style={[styles.sideNavHeadTxt, { color: "black", fontSize: 33 }]}>Items</Text>
+                                        <Text style={[styles.sideNavHeadTxt, { color: "black", fontSize: 28 }]}>Items</Text>
                                         <Text>List of all items.</Text>
                                     </View>
 
@@ -585,7 +589,7 @@ const ViewItemsScreen = () => {
                                 <View>
 
                                     <View style={{ margin: 10 }}>
-                                        <Text style={[styles.sideNavHeadTxt, { color: "black", fontSize: 33 }]}>{title}</Text>
+                                        <Text style={[styles.sideNavHeadTxt, { color: "black", fontSize: 28 }]}>{title}</Text>
                                         <Text>List of {title} items.</Text>
                                     </View>
 
@@ -631,7 +635,8 @@ const ViewItemsScreen = () => {
                                         ))}
                                     </View>
                                 </View>
-                            } */}
+                            }
+
                         </>
                     </ScrollView>
                 </View>
@@ -684,10 +689,12 @@ const ViewItemsScreen = () => {
             {addItemStatus ?
                 <View style={styles.popUpCont}>
                     <View style={styles.popUpBox}>
-                        <TouchableOpacity style={{ width: 50, height: 50, position: "absolute", top: 20, right: 20, justifyContent: "center", alignItems: "center" }} >
+                        <TouchableOpacity style={{ width: 50, height: 50, position: "absolute", top: 20, right: 20, justifyContent: "center", alignItems: "center" }} onPress={closeAddForm}>
                             <Image source={closeBtn} style={{ width: 35, height: 35 }} />
                         </TouchableOpacity>
-                        <AddItemCom />
+                        <Provider store={store}>
+                            <AddItemCom setaddItemStatus={setaddItemStatus} />
+                        </Provider>
                     </View>
                 </View>
                 : null}

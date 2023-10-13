@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, updateDoc,onSnapshot } from "firebase/firestore";
 import { db } from "../Config/Firebase";
 
 const initialState = {
@@ -46,11 +46,19 @@ export const fetchItems = () => async (dispatch) => {
     dispatch(fetchItemsStart())
     try {
         const collectionRef = collection(db, 'items');
-        const data = await getDocs(collectionRef);
-        const documents = data.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() };
-        });
-        dispatch(fetchItemsSuccess(documents))
+        // const data = await getDocs(collectionRef);
+        // const documents = data.docs.map((doc) => {
+        //     return { id: doc.id, ...doc.data() };
+        // });
+        onSnapshot(collectionRef, (snapshot) => { 
+            var fetchedDocuments = [];
+            snapshot.forEach((doc) => {
+              fetchedDocuments.push({ id: doc.id, ...doc.data() });
+            });
+            dispatch(fetchItemsSuccess(fetchedDocuments))
+          });
+
+        
         // console.log(documents);
     } catch (error) {
         dispatch(fetchItemsFailure(error))
