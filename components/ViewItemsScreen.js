@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, TextInput, ImageBackground, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-// import { fetchItems, deleteAnItem } from "../services/Service(Redux)/FirestoreGetItems";
 import { useDispatch, useSelector } from "react-redux";
-// import { updateAnItem } from "../services/Service(Redux)/FirestoreGetItems";
 import { fetchItems, deleteAnItem, updateAnItem } from "../services/Service(Redux)/FirestoreItems";
-// import {  useSelector } from "react-redux";
 import { Picker } from '@react-native-picker/picker';
 import { Provider } from 'react-redux';
 import { store } from "../services/Service(Redux)/store";
+
 //import images
 import allI from "../assets/Icons/all.png";
 import bev from "../assets/Icons/Beverages.png";
@@ -30,13 +28,11 @@ import addItm from "../assets/Icons/add.png";
 import bgImg from "../assets/Images/bg.jpg";
 import closeBtn from "../assets/Icons/close.png";
 import AddItemCom from './AddItemCom';
-// import AddNewItem from "./AddNewItem";
 
 const ViewItemsScreen = () => {
 
     const dispatch = useDispatch();
     const { items } = useSelector((state) => state.items)
-    // console.log(items);
     const [itemName, setItemName] = useState();
     const [itemQuantity, setItemQuantity] = useState();
     const [itemCategory, setItemCategory] = useState();
@@ -433,6 +429,7 @@ const ViewItemsScreen = () => {
     async function deleteItem(item) {
         await dispatch(deleteAnItem(item.id)).then(() => {
             dispatch(fetchItems());
+            setDisplayCatgoryStatus(false)
         })
         // console.log(item)
     }
@@ -476,15 +473,15 @@ const ViewItemsScreen = () => {
 
     }
 
-    if (!items) {
-        return (
-            <>
-                <View style={styles.loadingScreen}>
-                    <Text style={{ fontSize: 18, color: "#7C9070", fontWeight: "bold" }}>Loading...</Text>
-                </View>
-            </>
-        )
-    }
+    // if (!items) {
+    //     return (
+    //         <>
+    //             <View style={styles.loadingScreen}>
+    //                 <Text style={{ fontSize: 18, color: "#7C9070", fontWeight: "bold" }}>Loading...</Text>
+    //             </View>
+    //         </>
+    //     )
+    // }
 
     return (
         <View style={styles.container}>
@@ -802,7 +799,7 @@ const styles = StyleSheet.create({
     },
     popUpBox: {
         width: "90%",
-        height: "60%",
+        height: 520,
         backgroundColor: "whitesmoke",
         borderRadius: 30,
         alignItems: "center",

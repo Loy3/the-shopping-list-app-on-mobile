@@ -10,9 +10,6 @@ export default function App() {
     <Provider store={store}>
       <ViewItemsScreen />
     </Provider>
-    //  {/* <View style={styles.container}> */}
-    //  {/* <StatusBar style="auto" /> */}
-    //   {/* </View> */}
   );
 }
 

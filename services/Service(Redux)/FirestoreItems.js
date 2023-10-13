@@ -46,10 +46,7 @@ export const fetchItems = () => async (dispatch) => {
     dispatch(fetchItemsStart())
     try {
         const collectionRef = collection(db, 'items');
-        // const data = await getDocs(collectionRef);
-        // const documents = data.docs.map((doc) => {
-        //     return { id: doc.id, ...doc.data() };
-        // });
+        
         onSnapshot(collectionRef, (snapshot) => { 
             var fetchedDocuments = [];
             snapshot.forEach((doc) => {
